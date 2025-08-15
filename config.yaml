@@ -1,0 +1,212 @@
+# config.yaml - Unified ARF System Configuration
+
+# Model configurations - mix of API and web access
+models:
+  gpt-5:
+    type: api
+    api_key: ${OPENAI_API_KEY}
+    daily_limit: 1000000
+    rpm_limit: 60
+    preferred_tasks:
+      - complex_reasoning
+      - code_generation
+      - hypothesis_formation
+  
+  gpt-4-web:
+    type: web
+    web_credentials:
+      email: ${CHATGPT_EMAIL}
+      password: ${CHATGPT_PASSWORD}
+    session_timeout: 3600
+    preferred_tasks:
+      - continued_conversations
+      - file_analysis
+  
+  gemini-2-flash-thinking:
+    type: api
+    api_key: ${GOOGLE_API_KEY}
+    daily_limit: 500000
+    rpm_limit: 30
+    preferred_tasks:
+      - deep_evaluation
+      - philosophical_analysis
+  
+  gemini-deep-think-web:
+    type: web
+    web_credentials:
+      email: ${GOOGLE_EMAIL}
+      password: ${GOOGLE_PASSWORD}
+    preferred_tasks:
+      - clarity_rewriting
+      - intuitive_explanations
+  
+  claude-3-opus:
+    type: api
+    api_key: ${ANTHROPIC_API_KEY}
+    daily_limit: 200000
+    rpm_limit: 20
+    preferred_tasks:
+      - synthesis
+      - documentation
+  
+  claude-web:
+    type: web
+    web_credentials:
+      email: ${CLAUDE_EMAIL}
+      password: ${CLAUDE_PASSWORD}
+    preferred_tasks:
+      - fallback_reasoning
+
+# Philosophy settings - what makes an idea elegant
+philosophy:
+  weights:
+    inevitability: 0.30    # Natural, not arbitrary
+    symmetry: 0.25        # Respects fundamental symmetries
+    parsimony: 0.25       # Occam's razor
+    explanatory_power: 0.20  # Unifies concepts
+  
+  evaluation_thresholds:
+    accept: 0.75          # Auto-accept if score > this
+    consider: 0.50        # Queue for human review if between consider and accept
+    reject: 0.30          # Auto-reject if score < this
+
+# System behavior
+monitoring:
+  active_chats: true      # Monitor ongoing web conversations
+  check_interval: 1800    # Check every 30 minutes
+  export_check: 3600      # Check for new exports hourly
+
+# Validation settings
+validation:
+  max_parallel: 3
+  timeout_seconds: 300
+  memory_limit_mb: 2048
+  sandbox_mode: true
+  allowed_libraries:
+    - numpy
+    - scipy
+    - pandas
+    - matplotlib
+    - scikit-learn
+    - sympy
+    - networkx
+  
+  dataset_sources:
+    - name: kaggle
+      api_key: ${KAGGLE_API_KEY}
+    - name: uci
+      base_url: https://archive.ics.uci.edu/ml/
+    - name: cern
+      base_url: https://opendata.cern.ch/
+    - name: nasa
+      base_url: https://data.nasa.gov/
+
+# Document management
+documents:
+  main_path: ./output/framework.tex
+  compile_on_update: true
+  backup_frequency: hourly
+  comment_methods:
+    - latex_inline      # %% COMMENT: in LaTeX
+    - json_file        # Structured comments file
+    - git_notes        # Git-based comments
+    - web_interface    # localhost:5000
+  
+  appendix_settings:
+    max_size_mb: 100
+    separate_files: true
+    include_code: true
+    include_data_samples: false
+
+# Web scraping settings
+scraping:
+  browser: chromium
+  headless: false         # Show browser for debugging
+  user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
+  delays:
+    between_actions: [2, 5]  # Random delay in seconds
+    page_load: 10
+    typing_speed: 100        # ms per character
+  
+  retry_policy:
+    max_attempts: 3
+    backoff_factor: 2
+  
+  screenshot_errors: true
+  save_html_on_error: true
+
+# External sources
+external_sources:
+  youtube:
+    enabled: true
+    api_key: ${YOUTUBE_API_KEY}
+    extract_captions: true
+    extract_description: true
+  
+  arxiv:
+    enabled: true
+    max_results: 10
+    sort_by: relevance
+  
+  articles:
+    enabled: true
+    use_archive_fallback: true
+    parsers:
+      - newspaper3k
+      - beautifulsoup4
+  
+  sci_hub:
+    enabled: false  # Enable at your own risk
+    base_url: null
+
+# State management
+persistence:
+  state_file: ./state/system_state.pkl
+  backup_count: 3
+  checkpoint_interval: 300  # Save state every 5 minutes
+  compress_state: true
+
+# Notification settings
+notifications:
+  email:
+    enabled: false
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    from_email: ${NOTIFICATION_EMAIL}
+    to_email: ${USER_EMAIL}
+    
+    triggers:
+      - critical_question
+      - major_discovery
+      - validation_complete
+      - daily_summary
+  
+  desktop:
+    enabled: true
+    sound: true
+  
+  slack:
+    enabled: false
+    webhook_url: ${SLACK_WEBHOOK_URL}
+
+# Resource limits
+resources:
+  max_memory_gb: 8
+  max_cpu_percent: 75
+  max_storage_gb: 50
+  cleanup_age_days: 7
+
+# Logging
+logging:
+  level: INFO
+  file: ./logs/arf_system.log
+  max_size_mb: 100
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Development settings
+development:
+  debug_mode: false
+  verbose_agents: true
+  save_intermediate_results: true
+  profile_performance: false
